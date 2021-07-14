@@ -3,7 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import lesson3.task1.length
+import kotlin.math.log10
 import kotlin.math.sqrt
 
 /**
@@ -246,6 +246,11 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
+
+fun Int.length() = when(this) {
+    0 -> 1
+    else -> log10(Math.abs(toDouble())).toInt() + 1
+}
 
 fun stupidConverter(n: Int, isThousands: Boolean): List<String> {
     val res = mutableListOf<String>()
