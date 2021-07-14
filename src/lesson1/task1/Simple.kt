@@ -2,7 +2,6 @@
 
 package lesson1.task1
 
-import lesson4.task1.russian
 import java.lang.Math.pow
 import kotlin.math.*
 
@@ -55,7 +54,6 @@ fun main() {
     // println("Root product: $x1x2")
     val digit = thirdDigit(3801)
     println("result is $digit")
-    println(russian(375))
 }
 
 /**

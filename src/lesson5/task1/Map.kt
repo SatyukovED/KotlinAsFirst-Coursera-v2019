@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import java.lang.Integer.max
+
 /**
  * Пример
  *
@@ -280,4 +282,42 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+
+
+
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val A = Array(treasures.size + 1) { IntArray(capacity + 1) }
+    val w = IntArray(treasures.size)
+    val p = IntArray(treasures.size)
+    val things = mutableListOf<String>()
+    var i = 0
+    treasures.forEach { (k, v) ->
+        w[i] = v.first
+        p[i] = v.second
+        things.add(k)
+        i++
+    }
+    for (k in 1..treasures.size)
+        for (s in 1..capacity)
+            if (s >= w[k - 1])
+                A[k][s] = max(A[k - 1][s], A[k - 1][s - w[k - 1]] + p[k - 1])
+            else
+                A[k][s] = A[k - 1][s]
+
+    val ans = mutableSetOf<String>()
+
+    fun findAns(k: Int, s: Int){
+        if (A[k][s] == 0)
+            return
+        if (A[k - 1][s] == A[k][s])
+            findAns(k - 1, s)
+        else {
+            findAns(k - 1, s - w[k - 1])
+            ans.add(things[k - 1])
+        }
+    }
+
+    findAns(treasures.size, capacity)
+
+    return ans
+}
