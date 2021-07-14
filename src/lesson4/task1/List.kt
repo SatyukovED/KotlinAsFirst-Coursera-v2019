@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.length
 import kotlin.math.sqrt
 
 /**
@@ -245,4 +246,106 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+
+fun stupidConverter(n: Int, isThousands: Boolean): List<String> {
+    val res = mutableListOf<String>()
+    var number = n / 10
+    if (number % 10 == 1) {
+        res += when (n % 10) {
+            0 -> "десять"
+            1 -> "одиннадцать"
+            2 -> "двенадцать"
+            3 -> "тринадцать"
+            4 -> "четырнадцать"
+            5 -> "пятнадцать"
+            6 -> "шестнадцать"
+            7 -> "семнадцать"
+            8 -> "восемнадцать"
+            9 -> "девятнадцать"
+            else -> ""
+        }
+    } else {
+        if (isThousands) {
+            res += when (n % 10) {
+                0 -> ""
+                1 -> "одна"
+                2 -> "две"
+                3 -> "три"
+                4 -> "четыре"
+                5 -> "пять"
+                6 -> "шесть"
+                7 -> "семь"
+                8 -> "восемь"
+                9 -> "девять"
+                else -> ""
+            }
+        } else {
+            res += when (n % 10) {
+                0 -> ""
+                1 -> "один"
+                2 -> "два"
+                3 -> "три"
+                4 -> "четыре"
+                5 -> "пять"
+                6 -> "шесть"
+                7 -> "семь"
+                8 -> "восемь"
+                9 -> "девять"
+                else -> ""
+            }
+        }
+        if (number.length() > 1 || number.length() == 1 && number != 0)
+            res += when (number % 10) {
+                0 -> ""
+                1 -> ""
+                2 -> "двадцать"
+                3 -> "тридцать"
+                4 -> "сорок"
+                5 -> "пятьдесят"
+                6 -> "шестьдесят"
+                7 -> "семьдесят"
+                8 -> "восемьдесят"
+                9 -> "девяносто"
+                else -> ""
+            }
+    }
+    number /= 10
+    if (number.length() > 1 || number.length() == 1 && number != 0)
+        res += when (number % 10) {
+            0 -> ""
+            1 -> "сто"
+            2 -> "двести"
+            3 -> "триста"
+            4 -> "четыреста"
+            5 -> "пятьсот"
+            6 -> "шестьсот"
+            7 -> "семьсот"
+            8 -> "восемьсот"
+            9 -> "девятьсот"
+            else -> ""
+        }
+    res.removeAll { it == "" }
+    return res.asReversed()
+}
+
+fun russian(n: Int): String {
+    var res = stupidConverter(n % 1000, false)
+    val thousands = n / 1000
+    if (thousands == 0) {
+        return res.joinToString(separator = " ")
+    } else {
+        if (thousands % 100 in 10..19 || thousands % 10 == 0) {
+            res = listOf("тысяч") + res
+        } else {
+            res =
+                listOf(
+                    when (thousands % 10) {
+                        1 -> "тысяча"
+                        2, 3, 4 -> "тысячи"
+                        else -> "тысяч"
+                    }
+                ) + res
+        }
+        return (stupidConverter(thousands, true) + res).joinToString(separator = " ")
+    }
+}
