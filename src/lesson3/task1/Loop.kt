@@ -2,7 +2,11 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
+import java.lang.Math.*
+import kotlin.math.log10
 import kotlin.math.sqrt
+import kotlin.math.truncate
 
 /**
  * Пример
@@ -196,7 +200,26 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun Int.length() = when(this) {
+    0 -> 1
+    else -> log10(abs(toDouble())).toInt() + 1
+}
+
+fun squareSequenceDigit(n: Int): Int {
+    var number = 1
+    var length = 1
+    var i = 2
+    while (length < n) {
+        number = sqr(i)
+        length += number.length()
+        i += 1
+    }
+    var subnumber = number
+    for (j in 1..length - n) {
+        subnumber /= 10
+    }
+    return subnumber % 10
+}
 
 /**
  * Сложная
