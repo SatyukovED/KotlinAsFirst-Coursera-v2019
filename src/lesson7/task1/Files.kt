@@ -62,7 +62,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
                 val subLine = line.substring(i, i + substring.length)
                 if (subLine.equals(substring, ignoreCase = true)) counter++
             }
-                
+
         res[substring] = counter
     }
     return res
@@ -156,7 +156,18 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    for (line in File(inputName).readLines()) {
+        val splittedLine = line.toLowerCase().split("[0-9\\-—«»()*.,!?:;'\"\\s]+".toRegex()).toMutableList()
+        splittedLine.removeAll { it == "" }
+        for (word in splittedLine) {
+            result.putIfAbsent(word, 0)
+            result[word] = result[word]!! + 1
+        }
+    }
+    return result.toList().sortedByDescending { (_, v) -> v }.filter { it.second > 1 }.take(20).toMap()
+}
 
 /**
  * Средняя
