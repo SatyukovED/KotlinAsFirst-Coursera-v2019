@@ -69,7 +69,37 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    try {
+        val splitedDate = str.split(" ")
+        if (splitedDate.size != 3) return ""
+        val day = splitedDate[0].toInt()
+        val month = when(splitedDate[1]) {
+            "января" -> 1
+            "февраля" -> 2
+            "марта" -> 3
+            "апреля" -> 4
+            "мая" -> 5
+            "июня" -> 6
+            "июля" -> 7
+            "августа" -> 8
+            "сентября" -> 9
+            "октября" -> 10
+            "ноября" -> 11
+            "декабря" -> 12
+            else -> -1
+        }
+        if (month == -1) return ""
+        val year = splitedDate[2].toInt()
+        if (month == 2 && (day < 0 || day > 28) && year % 4 != 0) return ""
+        if (month == 2 && (day < 0 || day > 29) && year % 4 == 0) return ""
+        if ((day < 0 || day > 30) && month in setOf(4, 6, 9, 11)) return ""
+        if ((day < 0 || day > 31) && month in setOf(1, 3, 5, 7, 8, 10, 12)) return ""
+        return String.format("%02d.%02d.%d", day, month, year)
+    } catch (e: Exception) {
+        return ""
+    }
+}
 
 /**
  * Средняя
@@ -81,7 +111,38 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    try {
+        val splitedDate = digital.split(".")
+        if (splitedDate.size != 3) return ""
+        val day = splitedDate[0].toInt()
+        val month = splitedDate[1].toInt()
+        val year = splitedDate[2].toInt()
+        if (month == 2 && (day < 0 || day > 28) && year % 4 != 0) return ""
+        if (month == 2 && (day < 0 || day > 29) && year % 4 == 0) return ""
+        if ((day < 0 || day > 30) && month in setOf(4, 6, 9, 11)) return ""
+        if ((day < 0 || day > 31) && month in setOf(1, 3, 5, 7, 8, 10, 12)) return ""
+        val month_str = when(month) {
+            1 -> "января"
+            2 -> "февраля"
+            3 -> "марта"
+            4 -> "апреля"
+            5 -> "мая"
+            6 -> "июня"
+            7 -> "июля"
+            8 -> "августа"
+            9 -> "сентября"
+            10 -> "октября"
+            11 -> "ноября"
+            12 -> "декабря"
+            else -> "none"
+        }
+        if (month_str == "none") return ""
+        return String.format("%d %s %d", day, month_str, year)
+    } catch (e: Exception) {
+        return ""
+    }
+}
 
 /**
  * Средняя
