@@ -91,8 +91,9 @@ fun dateStrToDigit(str: String): String {
         }
         if (month == -1) return ""
         val year = splitedDate[2].toInt()
-        if (month == 2 && (day < 0 || day > 28) && year % 4 != 0) return ""
-        if (month == 2 && (day < 0 || day > 29) && year % 4 == 0) return ""
+        val isYearLeap = !((year % 4 != 0) || (year % 100 == 0) && (year % 400 != 0))
+        if (month == 2 && (day < 0 || day > 28) && !isYearLeap) return ""
+        if (month == 2 && (day < 0 || day > 29) && isYearLeap) return ""
         if ((day < 0 || day > 30) && month in setOf(4, 6, 9, 11)) return ""
         if ((day < 0 || day > 31) && month in setOf(1, 3, 5, 7, 8, 10, 12)) return ""
         return String.format("%02d.%02d.%d", day, month, year)
@@ -118,8 +119,9 @@ fun dateDigitToStr(digital: String): String {
         val day = splitedDate[0].toInt()
         val month = splitedDate[1].toInt()
         val year = splitedDate[2].toInt()
-        if (month == 2 && (day < 0 || day > 28) && year % 4 != 0) return ""
-        if (month == 2 && (day < 0 || day > 29) && year % 4 == 0) return ""
+        val isYearLeap = !((year % 4 != 0) || (year % 100 == 0) && (year % 400 != 0))
+        if (month == 2 && (day < 0 || day > 28) && !isYearLeap) return ""
+        if (month == 2 && (day < 0 || day > 29) && isYearLeap) return ""
         if ((day < 0 || day > 30) && month in setOf(4, 6, 9, 11)) return ""
         if ((day < 0 || day > 31) && month in setOf(1, 3, 5, 7, 8, 10, 12)) return ""
         val month_str = when(month) {
